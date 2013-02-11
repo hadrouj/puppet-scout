@@ -1,0 +1,4 @@
+scout
+=====
+
+Puppet scout module
