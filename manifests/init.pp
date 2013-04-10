@@ -1,4 +1,4 @@
-class scout ($display_name=$hostname, $user='scout', $key) {
+class scout ($display_name=$hostname, $roles_list='', $user='scout', $key) {
 
   package {['scout', 'SystemTimer', 'elif', 'request-log-analyzer']:
       ensure   => 'installed',
@@ -9,9 +9,13 @@ class scout ($display_name=$hostname, $user='scout', $key) {
     $option_displayname = "--name='${display_name}'"
   }
 
+  if $roles_list != '' {
+    $option_roles = "--roles ${roles_list}"
+  }
+
   cron {
     'scout':
-      command   => "/usr/bin/scout ${option_displayname} ${key}",
+      command   => "/usr/bin/scout ${option_displayname} ${option_roles} ${key}",
       user	    => $user,
       require   => Package['scout'],
   }
