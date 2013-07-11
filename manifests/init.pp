@@ -2,12 +2,13 @@ class scout ($display_name=$hostname, $roles_list='', $user='scout', $key) {
 
   package {['mysql-devel', 'libcurl-devel']:
     ensure   => 'installed',
-    provider => 'yum';
+    provider => 'yum',
   }
 
   package {['scout', 'SystemTimer', 'elif', 'request-log-analyzer', 'mysql', 'curb']:
       ensure   => 'installed',
-      provider => 'gem';
+      provider => 'gem',
+      require  => Package['mysql']
   }
 
   if $display_name {
