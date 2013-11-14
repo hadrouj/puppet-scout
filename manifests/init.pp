@@ -1,14 +1,15 @@
 class scout ($display_name=$hostname, $roles_list='', $user='scout', $key) {
 
-  package {['mysql-devel', 'libcurl-devel']:
+  package {['mysql', 'mysql-devel', 'libcurl-devel']:
     ensure   => 'installed',
     provider => 'yum',
   }
 
-  package {['scout', 'SystemTimer', 'elif', 'request-log-analyzer', 'curb']: # 'mysql',
+  package {['scout', 'SystemTimer', 'elif', 'request-log-analyzer', 'curb', 'mysql']:
       ensure   => 'installed',
       provider => 'gem',
-      require  => Package['mysql-devel', 'libcurl-devel']
+      # mysql gem requires both mysql and mysql-devel packages
+      require  => Package['mysql', 'mysql-devel', 'libcurl-devel']
   }
 
   if $display_name {
